@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\DataUser;
+use App\Models\RoleMenu;
+use App\Models\Data_Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,7 +17,49 @@ class CustomerController extends Controller
     public function index() {
         $dataCustomer = Customer::orderBy('id_customer', 'DESC')->paginate(10);
         // $dataKategori = Kategori::all();
-        return view('customer.index', compact('dataCustomer'));
+
+        // menu
+        // $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+        // $menuItemsWithSubmenus = [];
+        
+        // foreach ($mainMenus as $mainMenu) {
+        //     $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+        //                         ->where('menu_category', 'sub menu')
+        //                         ->orderBy('menu_position')
+        //                         ->get();
+
+        //     $menuItemsWithSubmenus[] = [
+        //         'mainMenu' => $mainMenu,
+        //         'subMenus' => $subMenus,
+        //     ];
+        // }
+
+        $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
+        return view('customer.index', compact('dataCustomer','menuItemsWithSubmenus'));
     }
 
     /**
@@ -23,7 +68,49 @@ class CustomerController extends Controller
     public function create()
     {
         $dataCustomer = Customer::all();
-        return view('customer.create', compact('dataCustomer'));
+
+        // menu
+        // $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+        // $menuItemsWithSubmenus = [];
+        
+        // foreach ($mainMenus as $mainMenu) {
+        //     $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+        //                         ->where('menu_category', 'sub menu')
+        //                         ->orderBy('menu_position')
+        //                         ->get();
+
+        //     $menuItemsWithSubmenus[] = [
+        //         'mainMenu' => $mainMenu,
+        //         'subMenus' => $subMenus,
+        //     ];
+        // }
+
+        $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
+        return view('customer.create', compact('dataCustomer','menuItemsWithSubmenus'));
     }
 
 
@@ -62,7 +149,49 @@ class CustomerController extends Controller
     {
         $dataCustomer = Customer::where('id_customer', $id_customer)->first();
         // $dataKategori = DB::table('data_menu')->select('*')->where('menu_category','master menu')->get();
-        return view('customer.update', compact('dataCustomer'));
+
+        // menu
+        // $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+        // $menuItemsWithSubmenus = [];
+        
+        // foreach ($mainMenus as $mainMenu) {
+        //     $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+        //                         ->where('menu_category', 'sub menu')
+        //                         ->orderBy('menu_position')
+        //                         ->get();
+
+        //     $menuItemsWithSubmenus[] = [
+        //         'mainMenu' => $mainMenu,
+        //         'subMenus' => $subMenus,
+        //     ];
+        // }
+
+        $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
+        return view('customer.update', compact('dataCustomer','menuItemsWithSubmenus'));
     }
 
     /**

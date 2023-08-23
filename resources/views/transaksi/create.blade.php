@@ -50,7 +50,7 @@
                                             </form>
                                         </div> 
                                         <div class="col-sm-6">
-                                            <form action="{{ route('produk.search') }}" method="POST" class="form-inline">
+                                            <form action="{{ route('jasa.search') }}" method="POST" class="form-inline">
                                                 @csrf
                                                 <div class="form-group">
                                                     <label for="searchInput">Cari jasa berdasarkan nama:</label>

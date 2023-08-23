@@ -34,7 +34,7 @@
                                     <div class="col-xs-6 scroll-container">
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <form action="{{ route('transaksi.filter', ['id_transaksi' => $dataTransaksi->id_transaksi]) }}" method="POST">
+                                                <form action="{{ route('transaksi.filter', ['id_transaksi' => $dataTransaksi->id_transaksi]) }}" method="GET">
                                                     @csrf
                                                     <div class="form-group">
                                                         <label for="filterKategori">Filter Kategori:</label>
@@ -50,7 +50,7 @@
                                                 </form>
                                             </div> 
                                             <div class="col-sm-6">
-                                                <form action="{{ route('produk.searchEdit', ['id_transaksi' => $dataTransaksi->id_transaksi]) }}" method="POST" class="form-inline">
+                                                <form action="{{ route('jasa.searchEdit', ['id_transaksi' => $dataTransaksi->id_transaksi]) }}" method="GET" class="form-inline">
                                                     @csrf
                                                     <div class="form-group">
                                                         <label for="searchInput">Cari jasa berdasarkan nama:</label>

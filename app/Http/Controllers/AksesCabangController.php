@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Cabang;
 use App\Models\DataUser;
+use App\Models\RoleMenu;
+use App\Models\Data_Menu;
 use App\Models\AksesCabang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +19,48 @@ class AksesCabangController extends Controller
     {
         $dataAksesCabang = AksesCabang::with('cabang','user')->get();
         // $dataKategori = Kategori::all();
-        return view('aksescabang.index', compact('dataAksesCabang'));
+
+        // menu
+        // $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+        // $menuItemsWithSubmenus = [];
+        
+        // foreach ($mainMenus as $mainMenu) {
+        //     $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+        //                         ->where('menu_category', 'sub menu')
+        //                         ->orderBy('menu_position')
+        //                         ->get();
+
+        //     $menuItemsWithSubmenus[] = [
+        //         'mainMenu' => $mainMenu,
+        //         'subMenus' => $subMenus,
+        //     ];
+        // }
+        $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
+        return view('aksescabang.index', compact('dataAksesCabang','menuItemsWithSubmenus'));
     }
 
     /**
@@ -28,7 +71,49 @@ class AksesCabangController extends Controller
         $dataAksesCabang = AksesCabang::all();
         $dataCabang = Cabang::all(); 
         $dataUser = DataUser::all(); 
-        return view('aksescabang.create', compact('dataAksesCabang','dataCabang','dataUser'));
+
+        // menu
+        // $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+        // $menuItemsWithSubmenus = [];
+        
+        // foreach ($mainMenus as $mainMenu) {
+        //     $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+        //                         ->where('menu_category', 'sub menu')
+        //                         ->orderBy('menu_position')
+        //                         ->get();
+
+        //     $menuItemsWithSubmenus[] = [
+        //         'mainMenu' => $mainMenu,
+        //         'subMenus' => $subMenus,
+        //     ];
+        // }
+
+        $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
+        return view('aksescabang.create', compact('dataAksesCabang','dataCabang','dataUser','menuItemsWithSubmenus'));
     }
 
     /**
@@ -67,7 +152,49 @@ class AksesCabangController extends Controller
         $dataCabang = Cabang::all();
         $dataUser = DataUser::all();
         // $dataKategori = DB::table('data_menu')->select('*')->where('menu_category','master menu')->get();
-        return view('aksescabang.update', compact('dataAksesCabang','dataCabang','dataUser'));
+
+         // menu
+        //  $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+        //  $menuItemsWithSubmenus = [];
+         
+        //  foreach ($mainMenus as $mainMenu) {
+        //      $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+        //                          ->where('menu_category', 'sub menu')
+        //                          ->orderBy('menu_position')
+        //                          ->get();
+ 
+        //      $menuItemsWithSubmenus[] = [
+        //          'mainMenu' => $mainMenu,
+        //          'subMenus' => $subMenus,
+        //      ];
+        //  }
+
+        $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
+        return view('aksescabang.update', compact('dataAksesCabang','dataCabang','dataUser','menuItemsWithSubmenus'));
     }
 
     /**

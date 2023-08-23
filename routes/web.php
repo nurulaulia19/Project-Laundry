@@ -120,11 +120,11 @@ Route::post('/transaksi/updateTransaksi', [TransaksiController::class, 'updateTr
 Route::get('/admin/transaksi/destroy/{id}', [TransaksiController::class,'destroy'])->name('transaksi.destroy');
 // Route::get('/admin/transaksi/destroy/{id}', [TransaksiController::class,'destroy'])->name('transaksi.destroy');
 
-Route::post('/produk/search', [TransaksiController::class,'searchProducts'])->name('produk.search');
-Route::post('/produk/search/{id_transaksi}', [TransaksiController::class,'search'])->name('produk.searchEdit');
-// Route::post('/produk/search', [TransaksiController::class,'searchProductsEdit'])->name('produk.searchEdit');
-Route::get('/produk/filter', [TransaksiController::class,'filter'])->name('produk.filter');
-Route::post('/produk/filter/{id_transaksi}', [TransaksiController::class,'filterProducts'])->name('transaksi.filter');
+Route::post('/jasa/search', [TransaksiController::class,'searchJasa'])->name('jasa.search');
+Route::get('/jasa/search/{id_transaksi}', [TransaksiController::class,'search'])->name('jasa.searchEdit');
+// Route::post('/jasa/search', [TransaksiController::class,'searchProductsEdit'])->name('jasa.searchEdit');
+Route::get('/jasa/filter', [TransaksiController::class,'filter'])->name('jasa.filter');
+Route::get('/jasa/filter/{id_transaksi}', [TransaksiController::class,'filterJasa'])->name('transaksi.filter');
 
 
 // Route::get('/print/{id_transaksi?}', [PrintController::class,'print'])->name('print');
@@ -234,3 +234,6 @@ Route::get('/admin/aksescabang/create', [AksesCabangController::class, 'create']
 Route::get('/admin/aksescabang/edit/{id}', [AksesCabangController::class, 'edit'])->name('aksescabang.edit');
 Route::post('/aksescabang/store', [AksesCabangController::class, 'store']);
 Route::get('/admin/aksescabang/destroy/{id}', [AksesCabangController::class,'destroy'])->name('aksescabang.destroy');
+
+Route::get('/sidebar2', [MenuController::class,'getSidebar'])->name('sidebar'); // Ganti dengan controller dan rute yang relevan
+

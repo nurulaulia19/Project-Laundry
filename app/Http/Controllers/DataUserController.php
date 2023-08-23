@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\DataUser;
+use App\Models\RoleMenu;
+use App\Models\Data_Menu;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +27,48 @@ class DataUserController extends Controller
         // $dataUser = DataUser::all();
         $dataUser = DataUser::with('role')->orderBy('user_id', 'DESC')->paginate(10);
         // $dataUser = DataUser::with('role')->get();
-        return view('user.index', compact('dataUser'));
+         // MENU
+        //  $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+        //  $menuItemsWithSubmenus = [];
+         
+        //  foreach ($mainMenus as $mainMenu) {
+        //      $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+        //                          ->where('menu_category', 'sub menu')
+        //                          ->orderBy('menu_position')
+        //                          ->get();
+     
+        //      $menuItemsWithSubmenus[] = [
+        //          'mainMenu' => $mainMenu,
+        //          'subMenus' => $subMenus,
+        //      ];
+        //  }
+
+        $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
+        return view('user.index', compact('dataUser','menuItemsWithSubmenus'));
     }
 
     /**
@@ -36,7 +79,49 @@ class DataUserController extends Controller
         // $User = DB::table('data_user')->select('*')->where('menu_category','master menu')->get();
         $dataRole = Role::all();
         $dataUser = DataUser::all();
-        return view('user.create', compact('dataUser','dataRole'));
+
+        // MENU
+        // $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+        // $menuItemsWithSubmenus = [];
+        
+        // foreach ($mainMenus as $mainMenu) {
+        //     $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+        //                         ->where('menu_category', 'sub menu')
+        //                         ->orderBy('menu_position')
+        //                         ->get();
+    
+        //     $menuItemsWithSubmenus[] = [
+        //         'mainMenu' => $mainMenu,
+        //         'subMenus' => $subMenus,
+        //     ];
+        // }
+
+        $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
+        return view('user.create', compact('dataUser','dataRole','menuItemsWithSubmenus'));
     }
 
     /**
@@ -109,7 +194,49 @@ class DataUserController extends Controller
         $dataRole = Role::all();
         // $dataUser = DataUser::all();
         $dataUser = DataUser::where('user_id', $user_id)->first();
-        return view('user.update', compact('dataUser','dataRole'));
+
+        // MENU
+        // $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+        // $menuItemsWithSubmenus = [];
+        
+        // foreach ($mainMenus as $mainMenu) {
+        //     $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+        //                         ->where('menu_category', 'sub menu')
+        //                         ->orderBy('menu_position')
+        //                         ->get();
+    
+        //     $menuItemsWithSubmenus[] = [
+        //         'mainMenu' => $mainMenu,
+        //         'subMenus' => $subMenus,
+        //     ];
+        // }
+
+        $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
+        return view('user.update', compact('dataUser','dataRole','menuItemsWithSubmenus'));
     }
 
     /**

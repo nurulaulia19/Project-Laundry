@@ -71,16 +71,16 @@
                                         </div>
                                         <div id="hidden_div">
 											<div class="form-group d-flex mb-3">
-												<label class="col-sm-3 control-label" for="menu_sub">Sub Menu</label>
-												<div class="col-sm-9">
-													<select placeholder="Sub Menu" name="menu_sub" id="menu_sub" class="form-control">
-														{{-- <input type="text" placeholder="Sub Menu" name="menu_sub" id="menu_sub" class="form-control"> --}}
-														@foreach ($dataMenu as $item)
-															<option	value="{{ $item->menu_id }}" {{ $item->menu_id == $menu->menu_sub ? 'selected' : '' }}>{{ $item->menu_name }}</option>
-														@endforeach
-													</select>
-												</div>	
-											</div>
+                                                <label class="col-sm-3 control-label" for="menu_sub">Sub Menu</label>
+                                                <div class="col-sm-9">
+                                                    <select placeholder="Sub Menu" name="menu_sub" id="menu_sub" class="form-control">
+                                                        <option value="">Pilih Sub Menu</option> {{-- Opsi kosong di sini --}}
+                                                        @foreach ($dataMenu as $item)
+                                                            <option value="{{ $item->menu_id }}" {{ $item->menu_id == $menu->menu_sub ? 'selected' : '' }}>{{ $item->menu_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>	
+                                            </div>                                            
 										</div>
                                         <div class="form-group d-flex mb-3">
                                             <label class="col-sm-3 control-label" for="menu_position">Posisi Menu</label>

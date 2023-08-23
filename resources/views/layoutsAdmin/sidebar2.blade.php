@@ -106,18 +106,18 @@
 
 					<ul id="mainnav-menu" class="list-group">
 			
-						<!--Category name-->
+						
 						<li class="list-header">Navigation</li>
 			
-						<!--Menu list item-->
-						<li class="{{ request()->is('admin/home*') ? 'active-sub' : '' }}">
+						
+						{{-- <li class="{{ request()->is('admin/home*') ? 'active-sub' : '' }}">
 							<a href="#">
 								<i class="demo-pli-home"></i>
 								<span class="menu-title">Home</span>
 								<i class="arrow"></i>
 							</a>
 
-								<!--Submenu-->
+								
 								<ul class="collapse {{ request()->is('admin/home*') ? 'in' : '' }}">
 									<li class="{{ request()->is('admin/home*') ? 'active-link' : '' }}"><a href="{{ route('admin.home') }}">Home</a></li>
 								</ul>
@@ -130,14 +130,14 @@
 								<i class="arrow"></i>
 							</a>
 
-								<!--Submenu-->
+								
 								<ul class="collapse {{ request()->is('admin/role*', 'admin/user*') ? 'in' : '' }}">
 									<li class="{{ request()->is('admin/role*') ? 'active-link' : '' }}"><a href="{{ route('role.index') }}">Role</a></li>
 									<li class="{{ request()->is('admin/user*') ? 'active-link' : '' }}"><a href="{{ route('user.index') }}">User</a></li>
 								</ul>
 						</li>
 
-							<!--Menu list item-->
+							
 							<li class="{{ request()->is('admin/menu*') ? 'active-sub' : '' }}">
 								<a href="#">
 									<i class="demo-pli-folder"></i>
@@ -145,7 +145,7 @@
 									<i class="arrow"></i>
 								</a>
 							
-								<!--Submenu-->
+								
 								<ul class="collapse {{ request()->is('admin/menu*') ? 'in' : '' }}">
 									<li class="{{ request()->is('admin/menu') ? 'active-link' : '' }}"><a href="{{ route('menu.index') }}">Menu</a></li>
 								</ul>
@@ -153,16 +153,16 @@
 
 							<li class="{{ request()->is('admin/transaksi*','admin/jasa*','admin/kategori*','admin/aditional*','admin/toko*', 'admin/customer*', 'admin/cabang*') ? 'active-sub' : '' }}">
 								<a href="#">
-									<i class="fas fa-tshirt"></i> <!-- Ikon untuk layanan laundry -->
+									<i class="fas fa-tshirt"></i> 
 									<span class="menu-title">Laundry</span>
 									<i class="arrow"></i>
 								</a>
 
-								<!--Submenu-->
+								
 
 								<ul class="collapse {{ request()->is('admin/transaksi*', 'admin/kategori*', 'admin/toko*', 'admin/customer*', 'admin/cabang*', 'admin/jasa*') ? 'in' : '' }}">
 									<li class="{{ request()->is('admin/transaksi*') ? 'active-link' : '' }}"><a href="{{ route('transaksi.index') }}">Transaksi</a></li>
-									{{-- <li class="{{ request()->is('admin/produk*') ? 'active-link' : '' }}"><a href="{{ route('produk.index') }}">Produk</a></li> --}}
+									
 									<li class="{{ request()->is('admin/jasa*') ? 'active-link' : '' }}"><a href="{{ route('jasa.index') }}">Jasa</a></li>
 									<li class="{{ request()->is('admin/kategori*') ? 'active-link' : '' }}"><a href="{{ route('kategori.index') }}">Kategori</a></li>
 									<li class="{{ request()->is('admin/toko*') ? 'active-link' : '' }}"><a href="{{ route('toko.index') }}">Toko</a></li>
@@ -179,9 +179,9 @@
 									<i class="arrow"></i>
 								</a>
 	
-									<!--Submenu-->
+
 									<ul class="collapse {{ request()->is('admin/laporan/jasa*', 'admin/laporan/transaksi*') ? 'in' : '' }}">
-										{{-- <li class="{{ request()->is('admin/laporan/produk*') ? 'active-link' : '' }}"><a href="{{ route('laporan.laporanProduk') }}">Produk</a></li> --}}
+										
 										<li class="{{ request()->is('admin/laporan/jasa*') ? 'active-link' : '' }}"><a href="{{ route('laporan.laporanJasa') }}">Jasa</a></li>
 										<li class="{{ request()->is('admin/laporan/transaksi*') ? 'active-link' : '' }}"><a href="{{ route('laporan.laporanTransaksi') }}">Transaksi</a></li>
 									</ul>
@@ -194,12 +194,77 @@
 									<i class="arrow"></i>
 								</a>
 	
-									<!--Submenu-->
 									<ul class="collapse {{ request()->is('admin/aksescabang*') ? 'in' : '' }}">
-										{{-- <li class="{{ request()->is('admin/laporan/produk*') ? 'active-link' : '' }}"><a href="{{ route('laporan.laporanProduk') }}">Produk</a></li> --}}
 										<li class="{{ request()->is('admin/aksescabang*') ? 'active-link' : '' }}"><a href="{{ route('aksescabang.index') }}">Akses Cabang</a></li>
 									</ul>
 							</li>
+							<hr> --}}
+							@php
+								$iconsByMenuName = [
+									'Home' => 'fas fa-home',
+									'Master User' => 'fas fa-user',
+									'Master Menu' => 'fas fa-folder',
+									'Laundry' => 'fas fa-tshirt',
+									'Laporan' => 'fas fa-file',
+									'Akses Cabang' => 'fas fa-building',
+
+									// Tambahkan asosiasi lain di sini sesuai dengan nama dan ikon yang sesuai
+								];
+
+							@endphp
+
+							@foreach ($menuItemsWithSubmenus as $menuItem)
+							@php
+								$isSubMenuActive = false;
+
+								foreach ($menuItem['subMenus'] as $subMenu) {
+									if (request()->is($subMenu->menu_link) || request()->routeIs($subMenu->menu_link)) {
+										$isSubMenuActive = true;
+										break;
+									}
+								}
+							@endphp
+
+							<li class="{{ $isSubMenuActive ? 'active-sub' : '' }}">
+								<a href="#">
+									@if (isset($iconsByMenuName[$menuItem['mainMenu']->menu_name]))
+										<i class="{{ $iconsByMenuName[$menuItem['mainMenu']->menu_name] }}"></i>
+									@else
+										<i class="fas fa-home"></i> <!-- Ini adalah contoh ikon default -->
+									@endif
+									<span class="menu-title">{{ $menuItem['mainMenu']->menu_name }}</span>
+									<i class="arrow"></i>
+								</a>
+								@if ($menuItem['subMenus']->count() > 0)
+									<ul class="collapse {{ $isSubMenuActive ? 'in' : '' }}">
+										@foreach ($menuItem['subMenus'] as $subMenu)
+											<li class="{{ request()->is($subMenu->menu_link) || request()->routeIs($subMenu->menu_link) ? 'active-link' : '' }}">
+												<a href="{{ route($subMenu->menu_link) }}">
+													{{ $subMenu->menu_name }}
+												</a>
+											</li>
+										@endforeach
+									</ul>
+								@endif
+							</li>
+							@endforeach
+
+
+						
+
+								
+						</ul>
+
+
+
+
+							<!-- resources/views/layouts/sidebar.blade.php -->
+
+							<!-- sidebar.blade.php -->
+
+
+
+
 				</div>
 			</div>
 		</div>

@@ -29,7 +29,7 @@
 							</div>
 
 							<div class="pad-all">
-								<canvas id="transaksiChart" style="width: 1200; height:500"></canvas>
+								<canvas id="transaksiChart" style="width: 1200px; height: 500px;"></canvas>
 							</div>
 						</div>
 					</div>					
@@ -108,7 +108,9 @@
     <!-- END OF CONTAINER -->
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-<script>
+	{{-- <canvas id="transaksiChart" width="1200" height="500"></canvas> --}}
+	{{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
+{{-- <script>
     var ctx = document.getElementById('transaksiChart').getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'line',
@@ -130,7 +132,149 @@
             }
         }
     });
+</script> --}}
+
+{{-- dua --}}
+{{-- <script>
+    var ctx = document.getElementById('transaksiChart').getContext('2d');
+    var datasets = [];
+
+    @foreach ($dataPerCabang as $cabangId => $totals)
+        var namaCabang = {!! json_encode($namaCabang[$cabangId]) !!}; // Mengambil nama cabang berdasarkan ID
+        datasets.push({
+            label: 'Cabang ' + namaCabang,
+            data: {!! json_encode($totals) !!},
+            borderColor: getRandomColor(),
+            borderWidth: 1,
+            fill: false
+        });
+    @endforeach
+
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {!! json_encode($labels) !!},
+            datasets: datasets
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+</script> --}}
+
+{{-- ini yang bener --}}
+{{-- <script>
+	var ctx = document.getElementById('transaksiChart').getContext('2d');
+	var datasets = [];
+
+	@if (count($dataPerCabang) > 0)
+		@foreach ($dataPerCabang as $cabangId => $totals)
+			var namaCabang = {!! json_encode($namaCabang[$cabangId]) !!}; // Mengambil nama cabang berdasarkan ID
+			datasets.push({
+				label: 'Cabang ' + namaCabang,
+				data: {!! json_encode($totals) !!},
+				borderColor: getRandomColor(),
+				borderWidth: 1,
+				fill: false
+			});
+		@endforeach
+	@else
+		var namaCabang = {!! json_encode($namaCabang['all']) !!}; // Mengambil nama cabang untuk total semua cabang
+		datasets.push({
+			label: 'Total Transaksi ' + namaCabang,
+			data: {!! json_encode($dataPerCabang['all']) !!},
+			borderColor: getRandomColor(),
+			borderWidth: 1,
+			fill: false
+		});
+	@endif
+
+	var myChart = new Chart(ctx, {
+		type: 'line',
+		data: {
+			labels: {!! json_encode($labels) !!},
+			datasets: datasets
+		},
+		options: {
+			scales: {
+				y: {
+					beginAtZero: true
+				}
+			}
+		}
+	});
+
+	function getRandomColor() {
+		var letters = '0123456789ABCDEF';
+		var color = '#';
+		for (var i = 0; i < 6; i++) {
+			color += letters[Math.floor(Math.random() * 16)];
+		}
+		return color;
+	}
+</script> --}}
+
+{{-- tiga --}}
+<script>
+var ctx = document.getElementById('transaksiChart').getContext('2d');
+var datasets = [];
+
+@foreach ($dataPerCabang as $cabangId => $totals)
+    @if (isset($namaCabang[$cabangId]))
+        var namaCabang = {!! json_encode($namaCabang[$cabangId]) !!};
+    @else
+        var namaCabang = ''; // Atau isikan dengan nilai default jika tidak ada nama cabang
+    @endif
+
+    datasets.push({
+        label: 'Cabang ' + namaCabang,
+        data: {!! json_encode($totals) !!},
+        borderColor: getRandomColor(),
+        borderWidth: 1,
+        fill: false
+    });
+
+	@endforeach
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {!! json_encode($labels) !!},
+        datasets: datasets
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
 </script>
+
+
 @endsection
 
 

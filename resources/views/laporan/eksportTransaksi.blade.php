@@ -99,8 +99,10 @@
             @endphp
             {{ $statusLaundry }}
 
-            @if(isset($cabangNama)) {{-- Tampilkan nama cabang hanya jika ada nilai nama cabang --}}
-                pada cabang {{ $cabangNama }}
+            @if (!empty($cabangNama)) {{-- Tampilkan nama cabang hanya jika ada nilai nama cabang --}}
+            pada cabang {{ $cabangNama }}
+            @else
+                pada semua cabang
             @endif
         </h5>
 

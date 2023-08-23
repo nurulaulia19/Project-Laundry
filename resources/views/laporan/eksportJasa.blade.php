@@ -72,8 +72,10 @@
         @endphp
         {{ $statusLaundry }}
 
-        @if(isset($cabangNama)) {{-- Tampilkan nama cabang hanya jika ada nilai nama cabang --}}
+        @if (!empty($cabangNama)) {{-- Tampilkan nama cabang hanya jika ada nilai nama cabang --}}
             pada cabang {{ $cabangNama }}
+        @else
+            pada semua cabang
         @endif
     </h5>
 
@@ -109,13 +111,24 @@
                     @if ($transaksiDetail->transaksi && $transaksiDetail->transaksi->tanggal_transaksi)
                         @php
                             $tanggalTransaksi = $transaksiDetail->transaksi->tanggal_transaksi;
-                            if ($tanggalTransaksi >= session('start_date') && $tanggalTransaksi <= session('end_date')) {
+                            $status = $transaksiDetail->transaksi->status;
+                            $cabang = $transaksiDetail->transaksi->id_cabang;
+                            $filteredStatus = session('status');
+                            $filteredCabangId = session('cabang');
+                        
+                            if (
+                                $tanggalTransaksi >= session('start_date') && 
+                                $tanggalTransaksi <= session('end_date') && 
+                                (!$filteredStatus || $status == $filteredStatus) && 
+                                (!$filteredCabangId || $cabang == $filteredCabangId)
+                            ) {
                                 $totalJumlahJasa += $transaksiDetail->jumlah_jasa;
                                 $grandTotalJumlahJasa += $transaksiDetail->jumlah_jasa;
                             }
                         @endphp
                     @endif
-                @endforeach
+
+                    @endforeach
                     <td style="vertical-align: middle;">{{ $totalJumlahJasa }}</td>
                 </tr>
                 @endforeach

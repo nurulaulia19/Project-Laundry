@@ -68,10 +68,12 @@
                                                                     <label for="cabang">Cabang:</label>
                                                                     <select class="form-control" name="cabang">
                                                                         <option value="">Semua</option>
-                                                                        @foreach ($dataCabang as $cabang)
-                                                                            <option value="{{ $cabang->cabang->id_cabang }}"{{ request('cabang') == $cabang->cabang->id_cabang ? ' selected' : '' }}>
-                                                                                {{ $cabang->cabang->nama_cabang }}
-                                                                            </option>
+                                                                        @foreach ($allCabang as $cabang)
+                                                                            @if ($dataCabang->isEmpty() || $dataCabang->contains('cabang.id_cabang', $cabang->id_cabang))
+                                                                                <option value="{{ $cabang->id_cabang }}"{{ request('cabang') == $cabang->id_cabang ? ' selected' : '' }}>
+                                                                                    {{ $cabang->nama_cabang }}
+                                                                                </option>
+                                                                            @endif
                                                                         @endforeach
                                                                     </select>
                                                                     
@@ -129,7 +131,17 @@
                                                         @if ($transaksiDetail->transaksi && $transaksiDetail->transaksi->tanggal_transaksi)
                                                             @php
                                                                 $tanggalTransaksi = $transaksiDetail->transaksi->tanggal_transaksi;
-                                                                if ($tanggalTransaksi >= session('start_date') && $tanggalTransaksi <= session('end_date')) {
+                                                                $status = $transaksiDetail->transaksi->status;
+                                                                $cabang = $transaksiDetail->transaksi->id_cabang;
+                                                                $filteredStatus = session('status');
+                                                                $filteredCabangId = session('cabang');
+                                                            
+                                                                if (
+                                                                    $tanggalTransaksi >= session('start_date') && 
+                                                                    $tanggalTransaksi <= session('end_date') && 
+                                                                    (!$filteredStatus || $status == $filteredStatus) && 
+                                                                    (!$filteredCabangId || $cabang == $filteredCabangId)
+                                                                ) {
                                                                     $totalJumlahJasa += $transaksiDetail->jumlah_jasa;
                                                                     $grandTotalJumlahJasa += $transaksiDetail->jumlah_jasa;
                                                                 }

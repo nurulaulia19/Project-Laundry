@@ -65,15 +65,26 @@
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                    <label for="cabang">Cabang:</label>
+                                                                    
                                                                     <select class="form-control" name="cabang">
+                                                                        <option value="">Semua</option>
+                                                                        @foreach ($allCabang as $cabang)
+                                                                            @if ($dataCabang->isEmpty() || $dataCabang->contains('cabang.id_cabang', $cabang->id_cabang))
+                                                                                <option value="{{ $cabang->id_cabang }}"{{ request('cabang') == $cabang->id_cabang ? ' selected' : '' }}>
+                                                                                    {{ $cabang->nama_cabang }}
+                                                                                </option>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </select>
+                                                                    
+                                                                    {{-- <select class="form-control" name="cabang">
                                                                         <option value="">Semua</option>
                                                                         @foreach ($dataCabang as $cabang)
                                                                             <option value="{{ $cabang->cabang->id_cabang }}"{{ request('cabang') == $cabang->cabang->id_cabang ? ' selected' : '' }}>
                                                                                 {{ $cabang->cabang->nama_cabang }}
                                                                             </option>
                                                                         @endforeach
-                                                                    </select> 
+                                                                    </select>  --}}
                                                                 </div>
                                                             </div>
                                                             
@@ -123,8 +134,8 @@
                                                         <td style="vertical-align: middle;">{{ $item->tanggal_selesai }}</td>
 					                                    {{-- <td style="vertical-align: middle;">{{ $item->user_password }}</td> --}}
 					                                    <td style="vertical-align: middle;">{{ $item->user->user_name }}</td>                                                      
-														<td style="vertical-align: middle; text-align: center;">{{ $item->customer->nama_customer }}</td>
-                                                        <td style="vertical-align: middle; text-align: center;">{{ $item->cabang->nama_cabang }}</td>
+														<td style="vertical-align: middle;">{{ $item->customer->nama_customer }}</td>
+                                                        <td style="vertical-align: middle;">{{ $item->cabang->nama_cabang }}</td>
                                                         <td style="vertical-align: middle;">{{ $item->status }}</td>
                                                         <td style="vertical-align: middle; text-align: center;">{{ $item->diskon_transaksi }} %</td>
 														<td style="vertical-align: middle; text-align: center;">{{ number_format($item->total_harga, 2, ',', '.') }}</td>

@@ -6,7 +6,10 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Models\Jasa;
 use App\Models\Cabang;
+use App\Models\DataUser;
 use App\Models\Kategori;
+use App\Models\RoleMenu;
+use App\Models\Data_Menu;
 use App\Exports\JasaExport;
 use App\Models\AksesCabang;
 use Illuminate\Support\Str;
@@ -24,7 +27,48 @@ class JasaController extends Controller
     public function index() {
         $dataJasa = Jasa::with('kategori')->orderBy('id_jasa', 'DESC')->paginate(10);
         // $dataProduk = DataProduk::with('kategori')->get();
-        return view('jasa.index', compact('dataJasa'));
+
+        // $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+        // $menuItemsWithSubmenus = [];
+        
+        // foreach ($mainMenus as $mainMenu) {
+        //     $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+        //                         ->where('menu_category', 'sub menu')
+        //                         ->orderBy('menu_position')
+        //                         ->get();
+
+        //     $menuItemsWithSubmenus[] = [
+        //         'mainMenu' => $mainMenu,
+        //         'subMenus' => $subMenus,
+        //     ];
+        // }
+
+        $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
+        return view('jasa.index', compact('dataJasa','menuItemsWithSubmenus'));
     }
 
     /**
@@ -34,7 +78,47 @@ class JasaController extends Controller
     {
         $dataKategori = Kategori::all();
         $dataJasa = Jasa::all();
-        return view('jasa.create', compact('dataKategori','dataJasa'));
+
+        // $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+        // $menuItemsWithSubmenus = [];
+        
+        // foreach ($mainMenus as $mainMenu) {
+        //     $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+        //                         ->where('menu_category', 'sub menu')
+        //                         ->orderBy('menu_position')
+        //                         ->get();
+
+        //     $menuItemsWithSubmenus[] = [
+        //         'mainMenu' => $mainMenu,
+        //         'subMenus' => $subMenus,
+        //     ];
+        // }
+        $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
+        return view('jasa.create', compact('dataKategori','dataJasa','menuItemsWithSubmenus'));
     }
 
     /**
@@ -92,7 +176,47 @@ class JasaController extends Controller
     {
         $dataKategori = Kategori::all();
         $dataJasa = Jasa::where('id_jasa', $id_jasa)->first();
-        return view('jasa.update', compact('dataKategori','dataJasa'));
+
+        // $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+        // $menuItemsWithSubmenus = [];
+        
+        // foreach ($mainMenus as $mainMenu) {
+        //     $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+        //                         ->where('menu_category', 'sub menu')
+        //                         ->orderBy('menu_position')
+        //                         ->get();
+
+        //     $menuItemsWithSubmenus[] = [
+        //         'mainMenu' => $mainMenu,
+        //         'subMenus' => $subMenus,
+        //     ];
+        // }
+        $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
+        return view('jasa.update', compact('dataKategori','dataJasa','menuItemsWithSubmenus'));
     }
 
     /**
@@ -255,13 +379,57 @@ class JasaController extends Controller
         
         // $dataCabang = Cabang::all();
         $loggedInUser = auth()->user();
-        $dataCabang = AksesCabang::where('user_id', $loggedInUser->user_id)
-            ->with('cabang')
-            ->get();
+    $dataCabang = AksesCabang::where('user_id', $loggedInUser->user_id)
+        ->with('cabang')
+        ->get();
+
+    $allCabang = Cabang::all();
+    $selectedCabangId = $loggedInUser->cabang_id; 
 
         // dd( $dataJasa);
+
+     // menu
+    //  $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+    //  $menuItemsWithSubmenus = [];
+     
+    //  foreach ($mainMenus as $mainMenu) {
+    //      $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+    //                          ->where('menu_category', 'sub menu')
+    //                          ->orderBy('menu_position')
+    //                          ->get();
+ 
+    //      $menuItemsWithSubmenus[] = [
+    //          'mainMenu' => $mainMenu,
+    //          'subMenus' => $subMenus,
+    //      ];
+    //  }
+    $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
     
-        return view('laporan.laporanJasa', compact('dataJasa','dataCabang'));
+        return view('laporan.laporanJasa', compact('dataJasa','dataCabang','allCabang','selectedCabangId','menuItemsWithSubmenus'));
     }
     
 

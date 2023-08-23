@@ -11,6 +11,8 @@ use App\Models\Customer;
 use App\Models\DataToko;
 use App\Models\DataUser;
 use App\Models\Kategori;
+use App\Models\RoleMenu;
+use App\Models\Data_Menu;
 use App\Models\Transaksi;
 use App\Models\DataProduk;
 use App\Models\AksesCabang;
@@ -57,8 +59,50 @@ class TransaksiController extends Controller
         }
     
         $dataTransaksi = $query->paginate(10);
+
+        // menu
+        // $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+        // $menuItemsWithSubmenus = [];
+        
+        // foreach ($mainMenus as $mainMenu) {
+        //     $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+        //                         ->where('menu_category', 'sub menu')
+        //                         ->orderBy('menu_position')
+        //                         ->get();
+
+        //     $menuItemsWithSubmenus[] = [
+        //         'mainMenu' => $mainMenu,
+        //         'subMenus' => $subMenus,
+        //     ];
+        // }
+
+        $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
     
-        return view('transaksi.index', compact('dataTransaksi'));
+        return view('transaksi.index', compact('dataTransaksi','menuItemsWithSubmenus'));
     }
     
     // public function index() {
@@ -113,9 +157,50 @@ class TransaksiController extends Controller
         
         $dataUser = DataUser::all();
    
+        // menu
+        // $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+        // $menuItemsWithSubmenus = [];
+        
+        // foreach ($mainMenus as $mainMenu) {
+        //     $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+        //                         ->where('menu_category', 'sub menu')
+        //                         ->orderBy('menu_position')
+        //                         ->get();
+
+        //     $menuItemsWithSubmenus[] = [
+        //         'mainMenu' => $mainMenu,
+        //         'subMenus' => $subMenus,
+        //     ];
+        // }
+
+        $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
         
         // $dataTransaksiDetail = TransaksiDetail::with('produk')->get();
-        return view('transaksi.create', compact('dataTransaksi','dataUser','dataJasa','dataTransaksiDetail','dataKategori','selectedKategoriId', 'dataCabang', 'dataCustomer','allCabang'));
+        return view('transaksi.create', compact('dataTransaksi','dataUser','dataJasa','dataTransaksiDetail','dataKategori','selectedKategoriId', 'dataCabang', 'dataCustomer','allCabang','menuItemsWithSubmenus'));
     }
 
     /**
@@ -195,7 +280,7 @@ public function store(Request $request)
     }
 }
 
-public function searchProducts(Request $request)
+public function searchJasa(Request $request)
 {
     $keyword = $request->input('keyword');
     $selectedKategoriId = $request->input('selectedKategori');
@@ -214,15 +299,63 @@ public function searchProducts(Request $request)
     $dataKategori = Kategori::all();
     $dataCustomer = Customer::all();
     // $dataCabang= Cabang::all();
+    // $loggedInUser = auth()->user();
+    // $dataCabang = AksesCabang::where('user_id', $loggedInUser->user_id)->with('cabang')->get();
     $loggedInUser = auth()->user();
-    $dataCabang = AksesCabang::where('user_id', $loggedInUser->user_id)->with('cabang')->get();
+        $dataCabang = AksesCabang::where('user_id', $loggedInUser->user_id)->with('cabang')->get();
+            if ($dataCabang->isEmpty()) {
+                $allCabang = Cabang::all();
+            }
+    $allCabang = Cabang::all();
+
     $dataTransaksiDetail = TransaksiDetail::where('id_transaksi', NULL)
         ->with('transaksi')
         ->get();
     $dataUser = DataUser::all();
 
+    // menu
+    // $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+    //     $menuItemsWithSubmenus = [];
+        
+    //     foreach ($mainMenus as $mainMenu) {
+    //         $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+    //                             ->where('menu_category', 'sub menu')
+    //                             ->orderBy('menu_position')
+    //                             ->get();
     
-    return view('transaksi.create', compact('dataJasa', 'dataKategori', 'dataTransaksiDetail', 'dataUser', 'selectedKategoriId','dataCustomer','dataCabang'));
+    //         $menuItemsWithSubmenus[] = [
+    //             'mainMenu' => $mainMenu,
+    //             'subMenus' => $subMenus,
+    //         ];
+    //     }
+
+    $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
+    
+    return view('transaksi.create', compact('dataJasa', 'dataKategori', 'dataTransaksiDetail', 'dataUser', 'selectedKategoriId','dataCustomer','dataCabang','allCabang','menuItemsWithSubmenus'));
 }
 
 public function search(Request $request, $id_transaksi)
@@ -245,17 +378,66 @@ public function search(Request $request, $id_transaksi)
         $dataKategori = Kategori::all();
         // $dataAditional = AditionalProduk::all();
         $dataCustomer = Customer::all();
+        // $loggedInUser = auth()->user();
+        // $dataCabang = AksesCabang::where('user_id', $loggedInUser->user_id)->with('cabang')->get();
+        // $dataCabang= Cabang::all();
+
         $loggedInUser = auth()->user();
         $dataCabang = AksesCabang::where('user_id', $loggedInUser->user_id)->with('cabang')->get();
-        // $dataCabang= Cabang::all();
+            if ($dataCabang->isEmpty()) {
+                $allCabang = Cabang::all();
+            }
+        $allCabang = Cabang::all();
+
         $dataTransaksiDetail = TransaksiDetail::where('id_transaksi', $id_transaksi)
             ->with('transaksi','jasa')
             ->get();
         $dataUser = DataUser::all();
         $dataTransaksi = Transaksi::find($request->id_transaksi);
        
+        // menu
+        // $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+        // $menuItemsWithSubmenus = [];
+        
+        // foreach ($mainMenus as $mainMenu) {
+        //     $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+        //                         ->where('menu_category', 'sub menu')
+        //                         ->orderBy('menu_position')
+        //                         ->get();
 
-        return view('transaksi.update', compact('dataJasa', 'dataKategori', 'dataTransaksiDetail', 'dataUser', 'selectedKategoriId','dataTransaksi', 'dataCustomer', 'dataCabang'));
+        //     $menuItemsWithSubmenus[] = [
+        //         'mainMenu' => $mainMenu,
+        //         'subMenus' => $subMenus,
+        //     ];
+        // }
+
+        $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
+
+        return view('transaksi.update', compact('dataJasa', 'dataKategori', 'dataTransaksiDetail', 'dataUser', 'selectedKategoriId','dataTransaksi', 'dataCustomer', 'dataCabang','allCabang','menuItemsWithSubmenus'));
     }
 
 
@@ -274,7 +456,7 @@ public function filter(Request $request)
 }
 
 
-public function filterProducts(Request $request, $id_transaksi)
+public function filterJasa(Request $request, $id_transaksi)
 {
     $keyword = $request->input('keyword');
     $selectedKategoriId = $request->input('selectedKategori');
@@ -299,12 +481,61 @@ public function filterProducts(Request $request, $id_transaksi)
     $dataUser = DataUser::all();
     $dataCustomer = Customer::all();
     // $dataCabang = Cabang::all();
+    // $loggedInUser = auth()->user();
+    // $dataCabang = AksesCabang::where('user_id', $loggedInUser->user_id)->with('cabang')->get();
+
     $loggedInUser = auth()->user();
-    $dataCabang = AksesCabang::where('user_id', $loggedInUser->user_id)->with('cabang')->get();
+        $dataCabang = AksesCabang::where('user_id', $loggedInUser->user_id)->with('cabang')->get();
+            if ($dataCabang->isEmpty()) {
+                $allCabang = Cabang::all();
+            }
+        $allCabang = Cabang::all();
+
     $dataTransaksi = Transaksi::find($request->id_transaksi);
 
+     // menu
+    //  $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+    //  $menuItemsWithSubmenus = [];
+     
+    //  foreach ($mainMenus as $mainMenu) {
+    //      $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+    //                          ->where('menu_category', 'sub menu')
+    //                          ->orderBy('menu_position')
+    //                          ->get();
+ 
+    //      $menuItemsWithSubmenus[] = [
+    //          'mainMenu' => $mainMenu,
+    //          'subMenus' => $subMenus,
+    //      ];
+    //  }
 
-    return view('transaksi.update', compact('dataJasa', 'dataKategori', 'dataTransaksiDetail', 'dataUser', 'selectedKategoriId','dataTransaksi', 'dataCustomer', 'dataCabang'));
+    $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
+
+    return view('transaksi.update', compact('dataJasa', 'dataKategori', 'dataTransaksiDetail', 'dataUser', 'selectedKategoriId','dataTransaksi', 'dataCustomer', 'dataCabang','allCabang','menuItemsWithSubmenus'));
 }
 
 
@@ -355,7 +586,49 @@ public function filterProducts(Request $request, $id_transaksi)
             }
             $allCabang = Cabang::all();
             $dataJasa = Jasa::with('kategori')->get();
-            return view('transaksi.update', compact('dataTransaksiDetail','dataJasa','dataTransaksi','dataKategori','selectedKategoriId','dataCustomer','dataCabang','allCabang'));
+
+            // menu
+            // $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+            // $menuItemsWithSubmenus = [];
+            
+            // foreach ($mainMenus as $mainMenu) {
+            //     $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+            //                         ->where('menu_category', 'sub menu')
+            //                         ->orderBy('menu_position')
+            //                         ->get();
+
+            //     $menuItemsWithSubmenus[] = [
+            //         'mainMenu' => $mainMenu,
+            //         'subMenus' => $subMenus,
+            //     ];
+            // }
+
+            $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
+            return view('transaksi.update', compact('dataTransaksiDetail','dataJasa','dataTransaksi','dataKategori','selectedKategoriId','dataCustomer','dataCabang','allCabang','menuItemsWithSubmenus'));
         }
 
 
@@ -533,8 +806,52 @@ public function laporanTransaksi(Request $request) {
         ->with('cabang')
         ->get();
 
+    $allCabang = Cabang::all();
+    $selectedCabangId = $loggedInUser->cabang_id; 
     // $dataCabang = Cabang::all();
-    return view('laporan.laporanTransaksi', compact('dataTransaksi', 'totalBayar', 'totalKembalian', 'dataCabang', 'cabangValue'));
+
+    // menu
+    // $mainMenus = Data_Menu::where('menu_category', 'master menu')->get();
+    //     $menuItemsWithSubmenus = [];
+        
+    //     foreach ($mainMenus as $mainMenu) {
+    //         $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+    //                             ->where('menu_category', 'sub menu')
+    //                             ->orderBy('menu_position')
+    //                             ->get();
+    
+    //         $menuItemsWithSubmenus[] = [
+    //             'mainMenu' => $mainMenu,
+    //             'subMenus' => $subMenus,
+    //         ];
+    //     }
+            $user_id = auth()->user()->user_id; // Use 'user_id' instead of 'id'
+
+            $user = DataUser::find($user_id);
+            $role_id = $user->role_id;
+
+            $menu_ids = RoleMenu::where('role_id', $role_id)->pluck('menu_id');
+
+            $mainMenus = Data_Menu::where('menu_category', 'master menu')
+                ->whereIn('menu_id', $menu_ids)
+                ->get();
+
+            $menuItemsWithSubmenus = [];
+
+            foreach ($mainMenus as $mainMenu) {
+                $subMenus = Data_Menu::where('menu_sub', $mainMenu->menu_id)
+                    ->where('menu_category', 'sub menu')
+                    ->whereIn('menu_id', $menu_ids)
+                    ->orderBy('menu_position')
+                    ->get();
+
+                $menuItemsWithSubmenus[] = [
+                    'mainMenu' => $mainMenu,
+                    'subMenus' => $subMenus,
+                ];
+            }
+
+    return view('laporan.laporanTransaksi', compact('dataTransaksi', 'totalBayar', 'totalKembalian', 'dataCabang', 'cabangValue', 'allCabang','selectedCabangId','menuItemsWithSubmenus'));
 }
 
 
