@@ -78,8 +78,6 @@ class TransaksiDetailController extends Controller
     {
         $dataTransaksiDetail = TransaksiDetail::where('id_transaksi_detail', $id_transaksi_detail);
         $dataTransaksiDetail->delete();
-        $tda = TransaksiDetailAditional::where('id_transaksi_detail', $id_transaksi_detail);
-        $tda->delete();
         return back()->with('success', 'Transaction updated successfully.');
     }
 }

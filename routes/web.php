@@ -102,10 +102,6 @@ Route::get('/admin/user/edit/{id}', [DataUserController::class, 'edit'])->name('
 Route::post('/user/store', [DataUserController::class, 'store']);
 Route::get('/admin/user/destroy/{id}', [DataUserController::class,'destroy'])->name('user.destroy');
 
-
-// Route::post('/admin/transaksi/update/{id_transaksi}', [TransaksiController::class, 'updateTransaksiDetail'])->name('transaksi.update');
-
-// Route::post('admin/transaksi/update', [TransaksiController::class, 'update'])->name('transaksi.update');
 Route::post('/admin/transaksi/update', [TransaksiController::class, 'update'])->name('transaksi.update');
 Route::get('/admin/transaksi/create', [TransaksiController::class, 'create'])->name('transaksi.create');
 Route::get('/admin/transaksi', [TransaksiController::class,'index'])->name('transaksi.index');
@@ -122,12 +118,11 @@ Route::get('/admin/transaksi/destroy/{id}', [TransaksiController::class,'destroy
 
 Route::post('/jasa/search', [TransaksiController::class,'searchJasa'])->name('jasa.search');
 Route::get('/jasa/search/{id_transaksi}', [TransaksiController::class,'search'])->name('jasa.searchEdit');
-// Route::post('/jasa/search', [TransaksiController::class,'searchProductsEdit'])->name('jasa.searchEdit');
 Route::get('/jasa/filter', [TransaksiController::class,'filter'])->name('jasa.filter');
 Route::get('/jasa/filter/{id_transaksi}', [TransaksiController::class,'filterJasa'])->name('transaksi.filter');
 
 
-// Route::get('/print/{id_transaksi?}', [PrintController::class,'print'])->name('print');
+
 Route::get('/admin/transaksi/{id_transaksi}/resi', [TransaksiController::class, 'showReceipt'])->name('transaksi.resi');
 
 
@@ -185,12 +180,6 @@ Route::get('/export/jasa/excel', [JasaController::class, 'exportToExcel'])->name
 Route::get('/laporan/eksportProduk', function () {
     return view('/laporan/eksportProduk');
 });
-
-// Route::get('/chart', [ChartController::class, 'index']);
-
-// Route::get('/profil/admin', [ProfilController::class, 'index'])->name('profil.admin');
-
-// Route::get('/profil/admin', [DataUserController::class, 'indexProfil'])->name('profil.admin');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profil/edit', [DataUserController::class, 'editProfil'])->name('profil.edit');
