@@ -726,42 +726,6 @@ public function showReceipt(Request $request)
 }
 
 
-
-
-
-// public function laporanTransaksi(Request $request) {
-//     $query = Transaksi::with('user')->orderBy('id_transaksi', 'DESC');
-
-//     $startDate = $request->input('start_date');
-//     $endDate = $request->input('end_date');
-//     $status = $request->input('status');
-
-//     if ($startDate && $endDate) {
-//         $query->whereBetween('tanggal_transaksi', [$startDate, $endDate]);
-//         session(['start_date' => $startDate]);
-//         session(['end_date' => $endDate]);
-//     } else {
-//         session()->forget('start_date');
-//         session()->forget('end_date');
-//     }
-
-//     if ($status) {
-//         $query->where('status', $status);
-//         session(['status' => $status]);
-//     } else {
-//         session()->forget('status');
-//     }
-
-//     $totalBayar = $query->sum('total_bayar');
-//     $totalKembalian = $query->sum('total_kembalian');
-
-
-//     $dataTransaksi = $query->paginate(10);
-
-//     return view('laporan.laporanTransaksi', compact('dataTransaksi','totalBayar','totalKembalian'));
-// }
-
-// baru
 public function laporanTransaksi(Request $request) {
     $query = Transaksi::with('user')->orderBy('id_transaksi', 'DESC');
 

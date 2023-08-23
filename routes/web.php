@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\AditionalProduk;
 use App\Http\Controllers\DataUserController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\TransaksiController;
@@ -16,7 +15,6 @@ use App\Http\Controllers\DataProdukController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\TransaksiDetailAditional;
 use App\Http\Controllers\TransaksiDetailController;
-use App\Http\Controllers\AditionalProdukController;
 use App\Http\Controllers\AksesCabangController;
 use App\Http\Controllers\JasaController;
 use App\Http\Controllers\CabangController;
@@ -132,13 +130,6 @@ Route::get('/admin/toko/create', [DataTokoController::class, 'create'])->name('t
 Route::post('/toko/store', [DataTokoController::class, 'store'])->name('toko.store');
 Route::get('/admin/toko/edit/{id}', [DataTokoController::class, 'edit'])->name('toko.edit');
 Route::get('/admin/toko/destroy/{id}', [DataTokoController::class,'destroy'])->name('toko.destroy');
-
-Route::put('/admin/produk/update/{id}', [DataProdukController::class, 'update'])->name('produk.update');
-Route::get('/admin/produk/create', [DataProdukController::class, 'create'])->name('produk.create');
-Route::get('/admin/produk', [DataProdukController::class,'index'])->name('produk.index');
-Route::get('/admin/produk/edit/{id}', [DataProdukController::class, 'edit'])->name('produk.edit');
-Route::post('/produk/store', [DataProdukController::class, 'store']);
-Route::get('/admin/produk/destroy/{id}', [DataProdukController::class,'destroy'])->name('produk.destroy');
 
 Route::put('/admin/kategori/update/{id}', [KategoriController::class, 'update'])->name('kategori.update');
 Route::get('/admin/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
