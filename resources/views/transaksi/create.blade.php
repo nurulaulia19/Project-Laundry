@@ -202,50 +202,17 @@
                                             </div>
                                             @include('transaksi.modalBayar')
                                         </div>
-                                        {{-- <form method="POST" action="/transaksi/store" enctype="multipart/form-data">
-                                            {{ csrf_field() }}
-                                            <div class="panel-body">
-                                                <div class="form-group d-flex mb-3">
-                                                    <label class="col-sm-3 control-label" for="diskon_transaksi">Diskon</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" placeholder="Diskon" name="diskon_transaksi" id="diskon_transaksi" class="form-control">
-                                                        <span id="diskon_transaksi_error" class="error-message"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group d-flex mb-3">
-                                                    <label class="col-sm-3 control-label" for="total_bayar">Total Harga</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" placeholder="Total Harga" name="total_harga" id="total_harga_input" class="form-control" value="{{ number_format($totalSemuaHarga, 0, ',', '.') }}">
-                                                        <span id="total_harga_error" class="error-message"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group d-flex mb-3">
-                                                    <label class="col-sm-3 control-label" for="total_bayar">Total Bayar</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" placeholder="Total Bayar" name="total_bayar" id="total_bayar_input" class="form-control">
-                                                        <span id="total_bayar_error" class="error-message"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group d-flex mb-3">
-                                                    <label class="col-sm-3 control-label" for="total_kembalian">Total Kembalian</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="text" placeholder="Total Kembalian" name="total_kembalian" id="total_kembalian_input" class="form-control">
-                                                        <span id="total_kembalian_error" class="error-message"></span>
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-                                            <div class="panel-footer text-right">
-                                                <a href="{{ route('transaksi.index') }}" class="btn btn-secondary">KEMBALI</a>
-                                                <button type="submit" onclick="validateForm(event)" class="btn btn-primary">SIMPAN</button>
-                                            </div>
-                                        </form> --}}
                                         
                                     </div>
                                 </div>
                             </div>
+                          
                         </div>
-					
+                        @if(session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                        @endif
                     
                 <!--===================================================-->
                 <!--End page content-->
@@ -364,23 +331,7 @@
   </script>
   
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-{{-- <script>
-    // Listen to changes in the filterKategori and searchInput
-    $('#filterKategori, #searchInput').on('change input', function () {
-        var selectedCategoryId = $('#filterKategori').val();
-        var searchValue = $('#searchInput').val().toLowerCase();
 
-        $('.produk-item').each(function () {
-            var itemKategori = $(this).data('kategori');
-            var itemText = $(this).text().toLowerCase();
-            var isCategoryMatch = selectedCategoryId === '' || selectedCategoryId == itemKategori;
-            var isSearchMatch = itemText.includes(searchValue);
-
-            // Show the product if it matches the selected category and search input, hide otherwise
-            $(this).toggle(isCategoryMatch && isSearchMatch);
-        });
-    });
-</script> --}}
 
 
 

@@ -114,18 +114,23 @@
 					                    <hr class="new-section-xs">
 					                    
 					                </div>
-                                    @if(session('success'))
-                                    <div class="alert alert-info">
-                                        {{ session('success') }}
-                                    </div>
-                                    @endif
+                                    
 					                <!--===================================================-->
 					                <!--End Data Table-->
 					
 					            </div>
 					        </div>
 					    </div>
-					
+                        @if(session('success'))
+                        <div class="alert alert-info">
+                            {{ session('success') }}
+                        </div>
+                        @endif
+                        @if(session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif 
 					
 					    
                 </div>

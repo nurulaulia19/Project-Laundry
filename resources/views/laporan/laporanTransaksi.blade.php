@@ -190,7 +190,11 @@
 					            </div>
 					        </div>
 					    </div>
-					
+                        @if(session('error'))
+							<div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+				        @endif
 					
 					    
                 </div>
@@ -228,37 +232,6 @@
     }
 </script>
 
-{{-- <script>
-    function handleExport() {
-        var exportType = document.getElementById('export_type').value;
-        var form = document.createElement('form');
-        form.action = "{{ route('laporan.eksport') }}";
-        form.method = 'post';
-        var csrfField = document.createElement('input');
-        csrfField.type = 'hidden';
-        csrfField.name = '_token';
-        csrfField.value = "{{ csrf_token() }}";
-        var exportTypeField = document.createElement('input');
-        exportTypeField.type = 'hidden';
-        exportTypeField.name = 'export_type';
-        exportTypeField.value = exportType;
-        form.appendChild(csrfField);
-        form.appendChild(exportTypeField);
-        document.body.appendChild(form);
-        form.submit();
-    }
-</script> --}}
 
-{{-- <script>
-    // Fungsi untuk menangani submit form
-    function handleExport() {
-        var form = document.getElementById('exportForm');
-        var exportType = document.getElementById('export_type').value;
-
-        // Set action form sesuai dengan tipe eksport yang dipilih
-        form.action = "{{ route('transaksi.export') }}" + "/" + exportType;
-        form.submit();
-    }
-</script> --}}
 
 

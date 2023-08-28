@@ -174,31 +174,7 @@
 
                                         {{-- {{ $dataProduk->links('pagination::bootstrap-4') }} --}}
 					                    <hr class="new-section-xs">
-					                    {{-- <div class="pull-right">
-					                        <ul class="pagination text-nowrap mar-no">
-					                            <li class="page-pre disabled">
-					                                <a href="#">&lt;</a>
-					                            </li>
-					                            <li class="page-number active">
-					                                <span>1</span>
-					                            </li>
-					                            <li class="page-number">
-					                                <a href="#">2</a>
-					                            </li>
-					                            <li class="page-number">
-					                                <a href="#">3</a>
-					                            </li>
-					                            <li>
-					                                <span>...</span>
-					                            </li>
-					                            <li class="page-number">
-					                                <a href="#">9</a>
-					                            </li>
-					                            <li class="page-next">
-					                                <a href="#">&gt;</a>
-					                            </li>
-					                        </ul>
-					                    </div> --}}
+					                    
 					                </div>
 					                <!--===================================================-->
 					                <!--End Data Table-->
@@ -206,7 +182,11 @@
 					            </div>
 					        </div>
 					    </div>
-					
+                        @if(session('error'))
+							<div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+				        @endif
 					
 					    
                 </div>

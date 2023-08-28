@@ -128,7 +128,12 @@
                                 <!--End Horizontal Form-->
                                 {{-- @endforeach --}}
                             </div>
-                        </div>	    
+                        </div>
+                        @if(session('error'))
+							<div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+				        @endif    
                 </div>
                 <!--===================================================-->
                 <!--End page content-->
