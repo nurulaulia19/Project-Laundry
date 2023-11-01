@@ -70,7 +70,7 @@
 		                    <input id="demo-form-checkbox" class="magic-checkbox" type="checkbox">
 		                    <label for="demo-form-checkbox">I agree with the <a href="#" class="btn-link text-bold">Terms and Conditions</a></label>
 		                </div>
-		                <button class="btn btn-primary btn-lg btn-block" type="submit">{{ __('Register') }}</button>
+		                <button class="btn btn-lg btn-block" style="background-color: #DA0C81; color:white;" type="submit">{{ __('Register') }}</button>
 		            </form>
 		        </div>
 		        <div class="pad-all">

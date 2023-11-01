@@ -7,9 +7,9 @@
                 <!--================================-->
                 <div class="navbar-header">
                     <a href="home" class="navbar-brand">
-                        <img src="{{ asset('assets/img/logo.png') }}" alt="Nifty Logo" class="brand-icon">
+                        <img src="{{ asset('assets/img/logolaundry.png') }}" alt="Nifty Logo" class="brand-icon" style="width:40px; height:30px; margin-top:14px; margin-left:5px">
                         <div class="brand-title">
-                            <span class="brand-text" style="color:white">Nifty</span>
+                            <span class="brand-text" style="color:white">Laundry</span>
                         </div>
                     </a>
                 </div>

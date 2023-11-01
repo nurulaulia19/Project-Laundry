@@ -38,25 +38,16 @@
 		                    <input id="demo-form-checkbox" class="magic-checkbox" type="checkbox">
 		                    <label for="demo-form-checkbox">Remember me</label>
 		                </div> --}}
-		                <button class="btn btn-primary btn-lg btn-block" type="submit">Sign In</button>
+		                <button class="btn btn-lg btn-block" style="background-color: #DA0C81; color:white" type="submit">Sign In</button>
 		            </form>
 		        </div>
 		
-		        <div class="pad-all">
-		            {{-- <a href="pages-password-reminder.html" class="btn-link mar-rgt">Forgot password ?</a> --}}
+		        {{-- <div class="pad-all">
 		            <a href="{{ route('register') }}" class="btn-link mar-lft">Create a new account</a>
 		
 		            <div class="media pad-top bord-top">
-		                {{-- <div class="pull-right">
-		                    <a href="#" class="pad-rgt"><i class="demo-psi-facebook icon-lg text-primary"></i></a>
-		                    <a href="#" class="pad-rgt"><i class="demo-psi-twitter icon-lg text-info"></i></a>
-		                    <a href="#" class="pad-rgt"><i class="demo-psi-google-plus icon-lg text-danger"></i></a>
-		                </div>
-		                <div class="media-body text-left text-bold text-main">
-		                    Login with
-		                </div> --}}
 		            </div>
-		        </div>
+		        </div> --}}
 		    </div>
 		</div>
 @endsection
