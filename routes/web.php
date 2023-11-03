@@ -37,7 +37,7 @@ use App\Models\TransaksiDetail;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('Adminlogin'); // Menggunakan nama rute 'login'.
 });
 
 // Route::get('/admin/dashboard', function () {

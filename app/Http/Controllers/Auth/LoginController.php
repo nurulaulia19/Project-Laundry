@@ -91,6 +91,12 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('Adminlogin'); // Menggunakan nama rute 'login'.
+    }
  
 //     public function login(Request $request)
 // {
@@ -104,6 +110,7 @@ class LoginController extends Controller
 //         return redirect()->back()->with('error', 'Invalid credentials');
 //     }
 // }
+
 
     public function showLoginForm() {
         return view('auth.login');
