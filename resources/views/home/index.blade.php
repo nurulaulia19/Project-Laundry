@@ -35,56 +35,64 @@
 					</div>					
 					    <div class="row">
 					        <div class="col-md-3">
-					            <div class="panel panel-warning panel-colorful media middle pad-all">
-					                <div class="media-left">
-					                    <div class="pad-hor">
-											<i class="fas fa-money-bill icon-3x"></i>
-					                    </div>
-					                </div>
-					                <div class="media-body">
-										<p class="text-2x mar-no text-semibold">{{ $jumlahTransaksi }}</p>
-										<p class="mar-no">Transaksi</p>
+								<a href="{{ route('transaksi.index') }}">
+									<div class="panel panel-warning panel-colorful media middle pad-all">
+										<div class="media-left">
+											<div class="pad-hor">
+												<i class="fas fa-money-bill icon-3x"></i>
+											</div>
+										</div>
+										<div class="media-body">
+											<p class="text-2x mar-no text-semibold">{{ $jumlahTransaksi }}</p>
+											<p class="mar-no">Transaksi</p>
+										</div>
 									</div>
-					            </div>
+								</a>
 					        </div>
 					        <div class="col-md-3">
-					            <div class="panel panel-info panel-colorful media middle pad-all">
-					                <div class="media-left">
-					                    <div class="pad-hor">
-					                        <i class="fas fa-shopping-bag icon-3x"></i>
-					                    </div>
-					                </div>
-					                <div class="media-body">
-					                    <p class="text-2x mar-no text-semibold">{{ $jumlahJasa}}</p>
-					                    <p class="mar-no">Jasa</p>
-					                </div>
-					            </div>
+								<a href="{{ route('jasa.index') }}">
+									<div class="panel panel-info panel-colorful media middle pad-all">
+										<div class="media-left">
+											<div class="pad-hor">
+												<i class="fas fa-shopping-bag icon-3x"></i>
+											</div>
+										</div>
+										<div class="media-body">
+											<p class="text-2x mar-no text-semibold">{{ $jumlahJasa}}</p>
+											<p class="mar-no">Jasa</p>
+										</div>
+									</div>
+								</a>
 					        </div>
 					        <div class="col-md-3">
-					            <div class="panel panel-mint panel-colorful media middle pad-all">
-					                <div class="media-left">
-					                    <div class="pad-hor">
-					                        <i class="fas fa-tag icon-3x"></i>
-					                    </div>
-					                </div>
-					                <div class="media-body">
-					                    <p class="text-2x mar-no text-semibold">{{ $jumlahKategori }}</p>
-					                    <p class="mar-no">Kategori</p>
-					                </div>
-					            </div>
+								<a href="{{ route('kategori.index') }}">
+									<div class="panel panel-mint panel-colorful media middle pad-all">
+										<div class="media-left">
+											<div class="pad-hor">
+												<i class="fas fa-tag icon-3x"></i>
+											</div>
+										</div>
+										<div class="media-body">
+											<p class="text-2x mar-no text-semibold">{{ $jumlahKategori }}</p>
+											<p class="mar-no">Kategori</p>
+										</div>
+									</div>
+								</a>
 					        </div>
 							<div class="col-md-3">
-					            <div class="panel panel-danger panel-colorful media middle pad-all">
-					                <div class="media-left">
-					                    <div class="pad-hor">
-					                        <i class="fas fa-calculator icon-3x"></i>
-					                    </div>
-					                </div>
-					                <div class="media-body">
-					                    <p class="text-2x mar-no text-semibold">{{ number_format($totalHargaProduk, 2, ',', '.') }}</p>
-					                    <p class="mar-no">Jumlah Penjualan</p>
-					                </div>
-					            </div>
+								<a href="{{ route('laporan.laporanTransaksi') }}">
+									<div class="panel panel-danger panel-colorful media middle pad-all">
+										<div class="media-left">
+											<div class="pad-hor">
+												<i class="fas fa-calculator icon-3x"></i>
+											</div>
+										</div>
+										<div class="media-body">
+											<p class="text-2x mar-no text-semibold">{{ number_format($totalHargaProduk, 2, ',', '.') }}</p>
+											<p class="mar-no">Jumlah Penjualan</p>
+										</div>
+									</div>
+								</a>
 					        </div>
 					    </div>
 						@if(session('error'))
